@@ -1,0 +1,258 @@
+.mb-3 {
+    margin-bottom: 10px;
+}
+
+.mb-4 {
+    margin-bottom: 20px;
+}
+
+.mb-5 {
+    margin-bottom: 30px;
+}
+
+.form-inline .form-search-transaction__product input.form-control {
+    width: 240px;
+    border-radius: 5px;
+}
+
+.list_name_card {
+    border-radius: 5px;
+    box-shadow:  1px 1px 10px -3px rgba(0,0,0,0.75);
+}
+.list_transaction_detail {
+    padding: 25px;
+}
+.chat-left img {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+}
+.list_transaction_detail li{
+    list-style-type: none;
+    margin-bottom: 10px;
+}
+.list_name_card img {
+    width: 100%;
+    height: 100px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.list_name_card_title h4 {
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+.form-inline .form-select-transaction__product select.form-control {
+    width: 392px;
+    border-radius: 5px;
+}
+
+.location-btn button.btn{
+    font-weight: bold;
+    background-color: white;
+    border: 1px solid #ff7544;
+}
+
+.location-btn button.btn:hover {
+    background-color:#ff7544;
+    color: white;
+}
+
+#wrapper {
+    width: 100%;
+}
+#page-wrapper {
+    padding:5em 2em 2.5em;
+	background-color: #F1F1F1;
+}
+.navbar-top-links {
+    margin-right: 0;
+}
+
+.navbar-top-links li {
+    display: inline-block;
+}
+
+.navbar-top-links li:last-child {
+    margin-right: 15px;
+}
+
+.navbar-top-links li a {
+    padding: 15px;
+    min-height: 50px;
+}
+
+.navbar-top-links .dropdown-menu li {
+    display: block;
+}
+
+.navbar-top-links .dropdown-menu li:last-child {
+    margin-right: 0;
+}
+
+.navbar-top-links .dropdown-menu li a {
+    padding: 3px 20px;
+    min-height: 0;
+}
+
+.navbar-top-links .dropdown-menu li a div {
+    white-space: normal;
+}
+
+.navbar-top-links .dropdown-messages,
+.navbar-top-links .dropdown-tasks,
+.navbar-top-links .dropdown-alerts {
+    width: 310px;
+    min-width: 0;
+}
+.navbar-top-links .dropdown-messages {
+    margin-left: 5px;
+}
+.navbar-top-links .dropdown-tasks {
+    margin-left: -59px;
+}
+
+.navbar-top-links .dropdown-alerts {
+    margin-left: -123px;
+}
+
+.navbar-top-links .dropdown-user {
+    right: 0;
+    left: auto;
+}
+
+.sidebar .sidebar-nav.navbar-collapse {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.sidebar .sidebar-search {
+    padding: 15px;
+}
+.sidebar .arrow {
+    float: right;
+}
+
+.sidebar .fa.arrow:before {
+    content: "\f105";
+}
+
+.sidebar .active>a>.fa.arrow:before {
+    content: "\f107";
+}
+
+.sidebar .nav-second-level li,
+.sidebar .nav-third-level li {
+    border-bottom: 0!important;
+	margin-bottom: 0;
+}
+
+.sidebar .nav-second-level li a {
+	padding:10px 0;
+    padding-left: 65px;
+    font-size: .9em;
+}
+.sidebar .nav-third-level li a {
+    padding-left: 52px;
+}
+
+.product-card {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.transaction-product {
+    height: 30px;
+}
+.transaction-product .desc {
+    float: left;
+}
+.transaction-product .date {
+    float: right;
+    margin-top: 5px;
+}
+.transaction-product .date span {
+    color: #fff;
+    align-items: center;
+}
+.transaction-product .desc span {
+    font-weight: 600;
+    font-size: 16pt;
+    color: white;
+    margin-right: 10px;
+}
+.bg-1 {
+    background-color: #1ab1b0;
+}
+.bg-2 {
+    background-color: #ff7544;
+}
+.bg-3 {
+    background-color: #8777fe;
+}
+.description {
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.group-desc {
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+.group-desc label {
+    color: #fff;
+    font-size: 11pt;
+}
+.group-desc input {
+    border-radius: 5px;
+    border: none;
+}
+.group-desc .form-control {
+    font-weight: bold;
+    font-size: 12pt;
+}
+.group-desc .form-control[disabled] {
+    background-color: #fff;
+}
+
+.officer {
+    margin-top: -10px;
+}
+
+.officer-group-left {
+    float: left;
+    margin-right: 15px;
+}
+
+.officer-left label {
+    font-size: 10pt;
+}
+
+.officer-left input {
+    border-radius: 5px;
+}
+
+.officer-left .form-control[disabled] {
+    background-color: #fff;
+}
+.officer-left input.form-control {
+    font-weight: bold;
+    font-size: 12pt;
+}
+.officer-group-right {
+    float: right;
+    margin-top: 13.5px;
+}
+.officer-group-right button {
+    font-weight: 600;
+}
+.officer-left {
+    width: 100%;
+}
+
+@media(min-width:768px){
+    .navbar-top-links .dropdown-messages,
+    .navbar-top-links .dropdown-tasks,
+    .navbar-top-links .dropdown-alerts {
+        margin-left: auto;
+    }
+}

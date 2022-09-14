@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use RealRashid\SweetAlert\Facades\Alert;
+
+class LocationController extends Controller
+{
+    public function index()
+    {
+        $locations = Http::get('sargas.test/api/locations')['data'];
+        return view('location.location', compact('locations'));
+    }
+
+    public function store(Request $request)
+    {
+
+        $this->validate($request,
+            [
+                'name' => 'required|unique:locations'
+            ]
+        );
+        Http::post('http://sargas.test/api/locations/store', $request->all());
+
+        Alert::success('Notifikasi', 'Data berhasil disimpan');
+        return back();
+    }
+
+    public function update(Request $request, $slug)
+    {
+        Http::post('http://sargas.test/api/locations/update/'.$slug, $request->all());
+
+        Alert::success('Notifikasi', 'Data berhasil diupdate');
+        return back();
+    }
+
+    public function destroy($slug)
+    {
+        Http::delete('http://sargas.test/api/locations/destroy/'.$slug);
+
+        Alert::success('Notifikasi', 'Data berhasil dihapus');
+        return back();
+    }
+}
