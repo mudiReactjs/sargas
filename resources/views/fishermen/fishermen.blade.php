@@ -1,7 +1,7 @@
 @extends('layout.general')
 @section('content')
 
-<div class="main-page" style="padding-top: 30px;">
+<div class="main-page" style="padding-top: 50px;">
     <div class="row">
         <div class="col-md-3 r3_counter_box_hover">
             <div class="r3_counter_box">
@@ -49,7 +49,7 @@
         </div>
         <div class="col-md-3">
             <div class="r3_counter_box">
-                <a href="{{route('debt.index')}}">
+                <a href="{{route('debt.form')}}">
                     <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
                     <div class="stats">
                         <h5><strong>Kas Bon</strong></h5>
@@ -60,7 +60,7 @@
         </div>
         <div class="col-md-3">
             <div class="r3_counter_box">
-                <a href="{{route('sack.index')}}">
+                <a href="{{route('sack.form')}}">
                     <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
                     <div class="stats">
                         <h5><strong>Karung</strong></h5>

@@ -54,7 +54,12 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function() {
 
         // Transaksi Pembelian Produk
         Route::get('/purchase/form', [PurchaseController::class, 'form'])->name('purchase.form');
-        Route::post('/purchase', [PurchaseController::class, 'store'])->name('purchase.store');
+        Route::get('/purchase/get-fishermen', [PurchaseController::class, 'get_fishermen'])->name('purchase.get-fishermen');
+        Route::get('/purchase/code-product-price', [PurchaseController::class, 'code_product_price'])->name('purchase.code-product-price');
+        // Route::post('/purchase', [PurchaseController::class, 'store'])->name('purchase.store');
+
+        // Get total qty
+        Route::get('/get-qty', [PurchaseController::class, 'get_qty'])->name('get_qty');
 
         // Transaksi Pending
         Route::get('/purchase/pending', [PurchaseController::class, 'pending'])->name('purchase.pending');
@@ -68,20 +73,21 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function() {
 
     });
 
+    // Get Data Select For Ajax
+    Route::get('/location-get', [LocationController::class, 'get_location'])->name('location.get');
+    Route::get('/fishermen-get', [FishermenController::class, 'get_fishermen'])->name('fishermen.get');
+    Route::get('/product-get', [ProductController::class, 'get_product'])->name('product.get');
+
 
     // Kasbon
-    Route::get('/kasbon', [DebtController::class, 'index'])->name('debt.index');
-    Route::get('/kasbon/form/{fishermen_id}', [DebtController::class, 'form'])->name('debt.form');
-    Route::post('/kasbon/{fishermen_id}', [DebtController::class, 'submission'])->name('debt.submission');
-
-    // Kasbon Pembayaran
-    Route::get('/kasbon/pembayaran/form/{id}', [DebtController::class, 'payment_form'])->name('debt.payment_form');
-    Route::patch('/kasbon/pembayaran/{id}', [DebtController::class, 'payment_update'])->name('debt.payment-update');
+    Route::get('/kasbon/form', [DebtController::class, 'form'])->name('debt.form');
+    Route::get('/kasbon/put-fishermen', [DebtController::class, 'put_fishermen'])->name('debt.put-fishermen');
+    Route::post('/kasbon', [DebtController::class, 'store'])->name('debt.store');
+    Route::post('/kasbon/pembayaran', [DebtController::class, 'debt_payment'])->name('debt.payment');
 
     //Karung
-    Route::get('/karung', [SackController::class, 'index'])->name('sack.index');
-    Route::get('/karung/form/{fishermen_id}', [SackController::class, 'create'])->name('sack.create');
-    Route::post('/karung/{fishermen}', [SackController::class, 'store'])->name('sack.store');
-    Route::patch('/karung/pengembalian/{id}', [SackController::class, 'update'])->name('sack.update');
+    Route::get('/karung/form', [SackController::class, 'form'])->name('sack.form');
+    Route::get('karung/check-sack-fishermen', [SackController::class, 'checkSackFishermen'])->name('sack.check');
+    Route::post('/karung', [SackController::class, 'store'])->name('sack.store');
 
 });

@@ -4,107 +4,159 @@ namespace App\Http\Controllers;
 
 use App\Models\Debt;
 use App\Models\Fishermen;
+use App\Models\Location;
 use App\Models\ProofDebt;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 
 class DebtController extends Controller
 {
-    public function index()
+    public function form()
     {
-        $debts= Debt::select('id', 'fishermen_id', 'code', 'nominal')->orderBy('id', 'desc')->paginate(10);
-        return view('debt.list', compact('debts'));
+        $locations = Location::select('id', 'name')->get();
+        return view('debt._form', compact('locations'));
     }
 
-    public function form($fishermen_id)
+    public function put_fishermen(Request $request)
     {
-        $code = Carbon::now()->format('M/d/Y/H:i:s');
+        if ($request->ajax()) {
+            $data = $request->all();
+        }
+        $fishermen = Fishermen::where('id', $data['id'])->select('id', 'name', 'image')->first();
+        $checkDebt = Debt::where('fishermen_id', $data['id'])->first();
 
-        $check = Debt::where('fishermen_id', $fishermen_id)->first();
-        $fishermen = Fishermen::where('fishermens.id', $fishermen_id)->first();
-
-
-        if ($check != null) {
-            $checkData = [
-                'fishermen_id' => $fishermen->id,
-                'name' => $fishermen->name,
-                'nominal' => $check->nominal,
-                'code' => $check->code
-
+        if ($checkDebt != null) {
+            $debt = [
+                'nominal' => $checkDebt->nominal
             ];
         } else {
-            $checkData = [
-                'fishermen_id' => $fishermen->id,
-                'name' => $fishermen->name,
-                'nominal' => 0,
-                'code' => 'KB.'.$code
-
+            $debt = [
+                'nominal' => 0
             ];
         }
-        return view('debt._form', compact('checkData'));
+
+        return response()->json(['fishermen' => $fishermen, 'checkDebt' => $debt]);
     }
 
-    public function submission(Request $request, $fishermen_id)
+    public function store(Request $request)
     {
-        $debt = Debt::where('fishermen_id', $fishermen_id)->first();
+        if ($request->ajax()) {
+            $data = $request->all();
+        }
 
-        if ($debt != null) {
+        // Check Kasbon
+        $checkDebt = Debt::where('fishermen_id', $data['fishermenID'])->first();
 
-            $cashDependent = $request->cash_dependent;
-            $nominal = $request->nominal + $cashDependent;
+        if ($checkDebt != null) {
 
-            $dataUpdate = [
-                'code' => $request->code,
-                'fishermen_id' => $request->fishermen_id,
-                'cash_dependent' => $request->cash_dependent,
-                'nominal' => $nominal
-            ];
+            $nominal = $checkDebt->nominal;
+            $updateNominal = $data['nominal'] + $nominal;
 
-            $debt->update($dataUpdate);
+            $checkDebt->update(['nominal' => $updateNominal]);
+
+
         } else {
-            $dataSave = [
-                'code' => $request->code,
-                'fishermen_id' => $request->fishermen_id,
-                'nominal' => $request->nominal
+            $insertDebt = [
+                'fishermen_id' => $data['fishermenID'],
+                'nominal' => $data['nominal']
             ];
 
-            Debt::create($dataSave);
+            Debt::create($insertDebt);
         }
 
-        Alert::success('Notifikasi', 'Berhasil disimpan');
-        return redirect()->route('fishermen.list');
+        return response()->json([
+            'message' => 'Data berhasil disimpan',
+            'nominal' => $checkDebt->nominal
+        ]);
+
     }
 
-    public function payment_form($id)
+    public function debt_payment(Request $request)
     {
-        $debt = Debt::where('id', $id)->first();
-        return view('debt._form-payment', compact('debt'));
-    }
 
-    public function payment_update(Request $request, $id)
-    {
-        $debt = Debt::where('id', $id)->first();
+        $validator = Validator::make($request->all(), [
+            'image' => 'mimes:png,jpg,jpeg'
+         ]);
 
-        $updateNominal = $debt->nominal - $request->payment_nominal;
-        $debt->update(['nominal' => $updateNominal]);
+         if ($validator->fails()) {
+            return response()->json([
+                'message' => $validator->errors(),
+                'status' => 400
+            ]);
+         }
 
+         //Update Kasbon
+         $debt = Debt::where('fishermen_id', $request->fishermen_id)->first();
+         $nominalUpdate = $debt->nominal - $request->payNominal;
+         $debt->update(['nominal' => $nominalUpdate]);
 
-        $image = $request->image;
-        $new_image = time().Str::slug($image->getClientOriginalName());
-        $image->move('uploads/proof_debt', $new_image);
+         // Save bukti transfer
+         $image = $request->file('image');
+         $new_image = time().Str::slug($image->getClientOriginalName());
+         $image->move('uploads/proof_debt', $new_image);
 
-
-        $proofDebtData = [
+         $saveProofDebt = [
             'debt_id' => $debt->id,
             'image' => $new_image
-        ];
+         ];
+         ProofDebt::create($saveProofDebt);
 
-        ProofDebt::create($proofDebtData);
+         return response()->json([
+            'status' => 201,
+            'message'=> 'Transaksi berhasil',
+            'nominal' => $debt->nominal
+        ]);
 
 
-        Alert::success('Notifikasi', 'Data berhasil diupdate');
-        return redirect()->route('debt.index');
+
+
     }
+
+
+
+    // public function form($fishermen_id)
+    // {
+    //     $checkData = Http::get('http://sargas.test/api/debt/create/'.$fishermen_id)['data'];
+    //     return view('debt._form', compact('checkData'));
+    // }
+
+    // public function submission(Request $request, $fishermen_id)
+    // {
+
+    //     Http::post('http://sargas.test/api/debt/store/'.$fishermen_id, $request->all());
+
+    //     Alert::success('Notifikasi', 'Berhasil disimpan');
+    //     return back();
+    // }
+
+    // public function payment($id)
+    // {
+    //     $debt = Http::get('http://sargas.test/api/debt/payment/'.$id)['data'];
+    //     return view('debt._form-payment', compact('debt'));
+    // }
+
+    // public function payment_update(Request $request, $id)
+    // {
+    //     $this->validate($request, [
+    //         'payment_nonminal' => 'required|integer',
+    //         'image' => 'required|mimes:png,jpg,jpeg'
+    //     ]);
+
+    //     $image = $request->image;
+    //     $new_image = time().Str::slug($image->getClientOriginalName());
+    //     $image->move('uploads/proof_debt', $new_image);
+
+    //     $data = [
+    //         'payment_nominal' => $request->payment_nominal,
+    //         'image' => $new_image
+    //     ];
+
+    //     Http::patch('http://sargas.test/api/debt/payment/'.$id,$data);
+
+    //     Alert::success('Notifikasi', 'Data berhasil diupdate');
+    //     return back();
+    // }
 }

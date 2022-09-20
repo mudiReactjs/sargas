@@ -11,7 +11,7 @@ class Sack extends Model
 
     protected $table = 'sacks';
     protected $fillable = [
-        'fishermen_id', 'sack_brought', 'sack_deposit'
+        'fishermen_id', 'sack_brought', 'sack_deposit', 'residual'
     ];
 
     public function fishermen()

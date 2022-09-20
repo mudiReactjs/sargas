@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -12,6 +13,12 @@ class LocationController extends Controller
     {
         $locations = Http::get('sargas.test/api/locations')['data'];
         return view('location.location', compact('locations'));
+    }
+
+    public function get_location()
+    {
+        $locations = Location::select('id', 'name')->get();
+        return response()->json(['locations' => $locations]);
     }
 
     public function store(Request $request)

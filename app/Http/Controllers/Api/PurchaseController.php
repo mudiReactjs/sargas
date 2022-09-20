@@ -29,6 +29,8 @@ class PurchaseController extends Controller
                 'product_id' => $request->product_id
             ])->select('id', 'name', 'image')->get();
 
+            $count = $fishermen->count();
+
 
             $location = Location::where('id', $request->location_id)->select('id', 'name')->first();
             $product = Product::where('id', $request->product_id)->select('id', 'name','price')->first();
@@ -39,7 +41,8 @@ class PurchaseController extends Controller
                     'products' => $products,
                     'locations' => $locations,
                     'fishermen' =>$fishermen,
-                    'code' => $codeTR
+                    'code' => $codeTR,
+                    'count' => $count
                 ],
                 'single' => [
                     'location' => [
@@ -55,13 +58,15 @@ class PurchaseController extends Controller
             ];
         } else {
             $fishermen = Fishermen::select('id', 'name', 'image')->get();
+            $count = $fishermen->count();
             $json = [
                 'status' => ApiFormatter::getResponse(200, 'get'),
                 'data' => [
                     'products' => $products,
                     'locations' => $locations,
                     'fishermen' =>$fishermen,
-                    'code' => $codeTR
+                    'code' => $codeTR,
+                    'count' => $count
                 ]
             ];
         }
@@ -88,7 +93,34 @@ class PurchaseController extends Controller
             return response($json, 400);
         }
 
-        Purchase::create($request->all());
+        $purchase = [
+            'code_tr' => $request->code_tr,
+            'sack' => $request->sack,
+            'product_id' => $request->product_id,
+            'tot_qty' => $request->tot_qty,
+            'tot_payment' => $request->total_payment,
+            'payment_method' => $request->payment_method,
+            'receipt' => $request->receipt,
+        ];
+        $purchase = Purchase::create($purchase);
+
+        // Update Sack
+        $sack = $request->sack;
+        $fishermen_id = $request->fishermen_id;
+        foreach ($sack as $value) {
+            
+        }
+        $detail = [
+            'purchase_id' => $purchase->id,
+            'fishermen_id' => $request->fishermen_id,
+
+        ];
+
+        $sack = [
+
+        ];
+
+
 
         $json = [
             'status' => ApiFormatter::getResponse(201, 'post')

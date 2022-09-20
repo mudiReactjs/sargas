@@ -42,9 +42,8 @@ body a:hover{
     position: relative;
 }
 .sidebar-left .navbar-brand {
-    height: 79px;
+    height: 100px;
     width: 100%;
-    padding-left: 30px;
     padding-top: 20px;
     font-size: 25px;
     text-transform: uppercase;
@@ -54,6 +53,7 @@ body a:hover{
     -moz-box-shadow:  1px 1px 10px -3px rgba(0,0,0,0.75);
     -o-box-shadow:  1px 1px 10px -3px rgba(0,0,0,0.75);
 }
+
 span.dashboard_text {
     font-size: 12px;
     text-transform: capitalize;
@@ -80,7 +80,7 @@ span.dashboard_text {
     z-index: 100;
 }
 .header-section {
-    height: 80px;
+    height: 100px;
     background:#FFF;
     box-shadow:  1px 1px 10px -3px rgba(0,0,0,0.75);
     -webkit-box-shadow:  1px 1px 10px -3px rgba(0,0,0,0.75);
@@ -97,11 +97,11 @@ span.dashboard_text {
     width: 20%;
     margin-left: 15%;
 	  position: relative;
-    padding-top: 5px;
+    padding-top: 15px;
     padding-bottom: 15px;
 }
 .header-right {
-    padding-top: 10px;
+    padding-top: 20px;
     padding-bottom: 15px;
     float: right;
 }

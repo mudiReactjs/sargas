@@ -1,6 +1,6 @@
 @extends('layout.general')
 @section('content')
-<div class="main-page" style="padding-top: 30px;">
+<div class="main-page" style="padding-top: 50px;">
     <div class="row">
         <div class="col-md-12">
             <h3 class="mb-4" style="float: left">Transaksi Pending</h3>

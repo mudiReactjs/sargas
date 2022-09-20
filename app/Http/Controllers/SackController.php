@@ -10,67 +10,80 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class SackController extends Controller
 {
-    public function index()
+
+    public function form()
     {
-        $sacks = Sack::select('id', 'fishermen_id','sack_brought', 'sack_deposit')->orderBy('created_at', 'desc')->paginate(10);
-        return view('sack.list', compact('sacks'));
+        return view('sack._form');
     }
 
-    public function create($fishermen_id)
+    public function checkSackFishermen(Request $request)
     {
-        $checkSack = Sack::where('fishermen_id', $fishermen_id)->first();
-        $fishermen = Fishermen::where('id', $fishermen_id)->first();
+        if ($request->ajax()) {
+            $data = $request->all();
+        }
+
+        $checkSack = Sack::where('fishermen_id', $data['id'])->first();
+        $fishermen = Fishermen::where('id', $data['id'])->select('id', 'name')->first();
 
         if ($checkSack != null) {
-            $check = [
-                'fishermen_id' => $fishermen_id,
-                'fishermenName' => $checkSack->fishermen->name,
-                'count_sack' => $checkSack->count_sack,
+            $getCheck = [
+                'fishermen_id' => $fishermen->id,
+                'name' => $fishermen->name,
                 'sack_brought' => $checkSack->sack_brought,
-                'sack_deposit' => $checkSack->sack_deposit
+                'sack_deposit' => $checkSack->sack_deposit,
+                'residual' => $checkSack->residual
             ];
         } else {
-            $check = [
-                'fishermen_id' => $fishermen_id,
-                'fishermenName' => $fishermen->name,
-                'count_sack' => 0,
+            $getCheck = [
+                'fishermen_id' => $fishermen->id,
+                'name' => $fishermen->name,
                 'sack_brought' => 0,
-                'sack_deposit' => 0
+                'sack_deposit' => 0,
+                'residual' => 0
             ];
         }
 
-        return view('sack._form', compact('check'));
+        return response()->json($getCheck);
+
+
     }
 
-    public function store(Request $request, $fishermen_id)
+    public function store(Request $request)
     {
-        $sack = Sack::where('fishermen_id', $fishermen_id)->first();
+
+        $sack = Sack::where('fishermen_id', $request->fishermen_id)->first();
 
 
         if ($sack != null) {
 
             // Jika sudah pernah minta karung
-            $countSackBrought = $sack->sack_brought + $request->count_sack;
+            $updateSackBrought = $sack->sack_brought + $request->sack;
 
             $data = [
-                'fishermen_id' =>$fishermen_id,
-                'sack_brought' => $countSackBrought,
+                'sack_brought' => $updateSackBrought,
             ];
 
             $sack->update($data);
 
         } else {
             $data = [
-                'fishermen_id' =>$fishermen_id,
-                'sack_brought' => $request->count_sack,
-                'sack_deposit' => 0
+                'fishermen_id' =>$request->fishermen_id,
+                'sack_brought' => $request->sack,
+                'sack_deposit' => 0,
+                'residual' => 0
             ];
 
             Sack::create($data);
         }
 
-        Alert::success('Notifikasi', 'Data berhasil disimpan');
-        return back();
+        $response = [
+            'message' => 'Data berhasil disimpan',
+            'sack_brought' => $sack->sack_brought,
+            'sack_deposit' => $sack->sack_deposit,
+            'residual' => $sack->residual,
+        ];
+
+        return response()->json($response);
 
     }
 

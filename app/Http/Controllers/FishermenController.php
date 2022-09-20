@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fishermen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -12,6 +13,17 @@ class FishermenController extends Controller
     public function index()
     {
         return view('fishermen.fishermen');
+    }
+
+    public function get_fishermen(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = $request->all();
+        }
+
+        $fishermen = Fishermen::where('location_id', $data['id'])->select('id', 'name', 'image', 'location_id')->get();
+
+        return response()->json(['fishermen' => $fishermen]);
     }
 
     public function list()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -41,5 +42,16 @@ class ProductController extends Controller
 
         Alert::success('Notifikasi', 'Data berhasil dihapus');
         return back();
+    }
+
+    public function get_product()
+    {
+        $products = Product::select('id', 'name')->get();
+
+        $response  = [
+            'products' => $products
+        ];
+
+        return response()->json($response);
     }
 }

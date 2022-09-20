@@ -16,13 +16,13 @@ class CreatePurchasesTable extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->string('code_tr')->unique();
-            $table->integer('fishermen_id');
             $table->integer('product_id');
-            $table->integer('location_id');
-            $table->integer('qty');
-            $table->integer('total');
+            $table->integer('tot_qty');
+            $table->integer('tot_payment');
+            $table->string('mitra');
             $table->enum('payment_method', ['belum-bayar','transfer', 'cash']);
             $table->text('receipt');
+            $table->double('status');
             $table->timestamps();
         });
     }

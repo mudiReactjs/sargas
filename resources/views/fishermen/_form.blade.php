@@ -1,7 +1,7 @@
 @extends('layout.general')
 @section('content')
 
-<div class="main-page" style="padding-top: 30px;">
+<div class="main-page" style="padding-top: 50px;">
 
     <div class="row">
         <div class="col-md-12 mb-4">

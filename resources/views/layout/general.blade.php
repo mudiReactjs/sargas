@@ -11,6 +11,8 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 <!-- Bootstrap Core CSS -->
 <link href="{{asset('assets/css/bootstrap.css')}}" rel='stylesheet' type='text/css' />
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <!-- Custom CSS -->
 <link href="{{asset('assets/css/style.css')}}" rel='stylesheet' type='text/css' />
 

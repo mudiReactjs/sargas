@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DebtController;
 use App\Http\Controllers\Api\FishermenController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\ProductController;
@@ -37,4 +38,15 @@ Route::prefix('transactions')->group(function() {
     Route::get('/purchase/form', [PurchaseController::class,'form']);
     Route::post('/purchase', [PurchaseController::class, 'store']);
     Route::get('/purchase/pending', [PurchaseController::class, 'pending']);
+});
+
+Route::prefix('debt')->group(function() {
+    Route::get('/form', [DebtController::class, 'index']);
+    // Kasbon
+    Route::get('/create/{fishermen_id}', [DebtController::class, 'create']);
+    Route::post('/store/{fishermen_id}', [DebtController::class, 'store']);
+
+    //Pembayaran
+    Route::get('/payment/{id}', [DebtController::class, 'payment']);
+    Route::patch('payment/{id}', [DebtController::class, 'payment_update']);
 });

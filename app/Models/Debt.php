@@ -11,7 +11,7 @@ class Debt extends Model
 
     protected $table = 'debts';
     protected $fillable = [
-        'code', 'fishermen_id', 'nominal'
+        'fishermen_id', 'nominal'
     ];
 
     public function fishermen()
