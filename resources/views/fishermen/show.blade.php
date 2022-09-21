@@ -18,12 +18,12 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                            <img src="{{asset('uploads/fishermen/'.$fishermen['image'])}}" alt="Admin" class="rounded-circle" width="150" height="150">
+                            <img src="{{asset('uploads/fishermen/'.$fishermen['fishermen']['image'])}}" alt="Admin" class="rounded-circle" width="150" height="150">
                             <div class="mt-3">
-                                <h4>{{$fishermen['name']}}</h4>
+                                <h4>{{$fishermen['fishermen']['name']}}</h4>
                                 <p class="text-secondary mb-1">Nelayan</p>
-                                <p class="text-muted font-size-sm mb-2">{{$fishermen['address']}}</p> <br>
-                                <button class="btn btn-primary btn-sm">Print Data</button>
+                                <p class="text-muted font-size-sm mb-2">{{$fishermen['fishermen']['address']}}</p> <br>
+                                <button class="btn btn-primary btn-sm" style="margin-right: 5px">Print Data</button><button class="btn btn-success btn-sm">Edit</button>
                             </div>
                         </div>
                     </div>
@@ -37,41 +37,20 @@
                             <tbody>
                                 <tr>
                                     <td class="py-3">Nama</td>
-                                    <td class="py-3">: {{$fishermen['name']}}</td>
+                                    <td class="py-3">: {{$fishermen['fishermen']['name']}}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-3">Alamat</td>
-                                    <td class="py-3">: {{$fishermen['address']}}</td>
+                                    <td class="py-3">: {{$fishermen['fishermen']['address']}}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-3">No Telepon</td>
-                                    <td class="py-3">: {{$fishermen['no_tlp']}}</td>
+                                    <td class="py-3">: {{$fishermen['fishermen']['no_tlp']}}</td>
                                 </tr>
                             </tbody>
                         </table>
                    </div>
                 </div>
-                <div class="card">
-                    <div class="px-3 py-3">
-                         <table class="table ">
-                             <thead>
-                                 <th colspan="2">Kasbon</th>
-                             </thead>
-                             <tbody>
-                                 <tr>
-                                     <td class="py-3">Nominal kasbon</td>
-                                     <td class="py-3">: Rp. 450.000</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="py-3">Status</td>
-                                    <td class="py-3">: <span class="badge bg-danger">Belum Lunas</span></td>
-                                 </tr>
-                             </tbody>
-                         </table>
-                    </div>
-                 </div>
-            </div>
-            <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-body">
                         <table class="table">
@@ -81,24 +60,24 @@
                             <tbody>
                                 <tr>
                                     <td class="py-3">Produk</td>
-                                    <td class="py-3">: {{$fishermen['product']['name']}}</td>
+                                    <td class="py-3">: {{$fishermen['fishermen']['product']['name']}}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-3">Lokasi Pengambilan</td>
-                                    <td class="py-3">: {{$fishermen['location']['name']}}</td>
+                                    <td class="py-3">: {{$fishermen['fishermen']['location']['name']}}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-3">Alat Pengambilan</td>
-                                    <td class="py-3">: {{$fishermen['tool']}}</td>
+                                    <td class="py-3">: {{$fishermen['fishermen']['tool']}}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-3">Jumlah Keluarga</td>
-                                    <td class="py-3">: {{$fishermen['family_amount']}}</td>
+                                    <td class="py-3">: {{$fishermen['fishermen']['family_amount']}}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-3">Status</td>
                                     <td class="py-3">:
-                                        @if ($fishermen['status'] == 1)
+                                        @if ($fishermen['fishermen']['status'] == 1)
                                             <span class="badge bg-success">Active</span>
                                         @else
                                             <span class="badge bg-danger">Inactive</span>
@@ -110,6 +89,31 @@
                         </table>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card mb-3">
+                    <div class="px-3 py-3">
+                         <table class="table ">
+                             <thead>
+                                 <th colspan="2">Kasbon</th>
+                             </thead>
+                             <tbody>
+                                 <tr>
+                                     <td class="py-3">Nominal kasbon</td>
+                                     <td class="py-3">: {{$fishermen['debt']['nominal']}}</td>
+                                 </tr>
+                                 <tr>
+                                    <td class="py-3">Status</td>
+                                    <td class="py-3">:
+                                        <span class="badge @if($fishermen['debt']['status'] == 'Belum Lunas') bg-danger @else bg-success @endif">
+                                            {{$fishermen['debt']['status']}}
+                                        </span>
+                                    </td>
+                                 </tr>
+                             </tbody>
+                         </table>
+                    </div>
+                </div>
                 <div class="card mb-3">
                     <div class="card-body">
                         <table class="table">
@@ -119,15 +123,15 @@
                             <tbody>
                                 <tr>
                                     <td class="py-3">Karung dibawa</td>
-                                    <td class="py-3">: 100</td>
+                                    <td class="py-3">: {{$fishermen['sack']['sack_brought']}}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-3">Karung disetorkan</td>
-                                    <td class="py-3">: 50</td>
+                                    <td class="py-3">: {{$fishermen['sack']['sack_deposit']}}</td>
                                 </tr>
                                 <tr>
                                     <td class="py-3">Sisa karung</td>
-                                    <td class="py-3">: 50</td>
+                                    <td class="py-3">: {{$fishermen['sack']['residual']}}</td>
                                 </tr>
                             </tbody>
                         </table>

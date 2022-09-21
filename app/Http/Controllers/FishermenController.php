@@ -21,7 +21,11 @@ class FishermenController extends Controller
             $data = $request->all();
         }
 
-        $fishermen = Fishermen::where('location_id', $data['id'])->select('id', 'name', 'image', 'location_id')->get();
+        if (empty($data['productID'])) {
+            $fishermen = Fishermen::where('location_id',$data['id'])->select('id', 'name', 'image', 'location_id')->get();
+        } else {
+            $fishermen = Fishermen::where(['location_id'=>$data['id'], 'product_id' => $data['productID']])->select('id', 'name', 'image', 'location_id')->get();
+        }
 
         return response()->json(['fishermen' => $fishermen]);
     }
@@ -46,8 +50,6 @@ class FishermenController extends Controller
             'name' => 'required',
             'address' => 'required',
             'no_tlp' => 'required|regex:/[0-9]/',
-            'tool' => 'required',
-            'family_amount' => 'required|integer',
             'image' => 'required|mimes:png,jpg,jpeg|max:2048',
         ];
 

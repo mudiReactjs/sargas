@@ -79,21 +79,11 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Alat Pengambilan</label>
-                                        <input type="text" class="form-control @error('tool') is-invalid @enderror" name="tool" id="inputName" placeholder="Alat Pengambilan" required>
-                                        @error('tool')
-                                        <span class="invalid-feedback text-danger" role="alert" style="font-size: 10pt">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
+                                        <input type="text" class="form-control" name="tool" id="inputName" placeholder="Alat Pengambilan">
                                     </div>
                                     <div class="form-group">
                                         <label>Jumlah Keluarga</label>
-                                        <input type="number" min="1" name="family_amount" class="form-control  @error('family_amount') is-invalid @enderror" id="inputName" placeholder="Jumlah Keluarga" required>
-                                        @error('family_amount')
-                                            <span class="invalid-feedback text-danger" role="alert" style="font-size: 10pt">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
+                                        <input type="number" min="1" name="family_amount" class="form-control" id="inputName" placeholder="Jumlah Keluarga">
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">Daftar</button>

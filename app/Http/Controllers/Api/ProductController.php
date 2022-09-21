@@ -51,7 +51,6 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(),
         [
             'name' => 'required|unique:products',
-            'price' => 'required|integer'
         ]
 
         );
@@ -116,15 +115,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
-        $validator = Validator::make($request->all(),[
-            'price' => 'required|integer'
-        ]);
-
-        if ($validator->fails()) {
-            return response($validator->errors());
-        }
-
-       $product->update($request->all());
+        $product->update($request->all());
 
         $json = [
             'status' => ApiFormatter::getResponse(201, 'patch'),

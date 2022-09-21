@@ -30,11 +30,11 @@ class DebtController extends Controller
 
         if ($checkDebt != null) {
             $debt = [
-                'nominal' => $checkDebt->nominal
+                'nominal' => 'Rp. '.number_format( $checkDebt->nominal,0,',','.')
             ];
         } else {
             $debt = [
-                'nominal' => 0
+                'nominal' => 'Rp. 0'
             ];
         }
 
@@ -46,14 +46,16 @@ class DebtController extends Controller
         if ($request->ajax()) {
             $data = $request->all();
         }
+        $nominalFormat = Str::replace(['Rp.', '.'],'',$data['nominal']);
+        $nominalInt = (int)$nominalFormat;
 
         // Check Kasbon
         $checkDebt = Debt::where('fishermen_id', $data['fishermenID'])->first();
 
         if ($checkDebt != null) {
 
-            $nominal = $checkDebt->nominal;
-            $updateNominal = $data['nominal'] + $nominal;
+            $getNominal = $checkDebt->nominal;
+            $updateNominal = $nominalInt + $getNominal;
 
             $checkDebt->update(['nominal' => $updateNominal]);
 
@@ -61,7 +63,7 @@ class DebtController extends Controller
         } else {
             $insertDebt = [
                 'fishermen_id' => $data['fishermenID'],
-                'nominal' => $data['nominal']
+                'nominal' => $nominalInt
             ];
 
             Debt::create($insertDebt);
@@ -69,7 +71,7 @@ class DebtController extends Controller
 
         return response()->json([
             'message' => 'Data berhasil disimpan',
-            'nominal' => $checkDebt->nominal
+            'nominal' =>'Rp. '.number_format( $checkDebt->nominal,0,',','.')
         ]);
 
     }
@@ -88,9 +90,12 @@ class DebtController extends Controller
             ]);
          }
 
+        $nominalFormat = Str::replace(['Rp.', '.'],'',$request->payNominal);
+        $nominalInt = (int)$nominalFormat;
+
          //Update Kasbon
          $debt = Debt::where('fishermen_id', $request->fishermen_id)->first();
-         $nominalUpdate = $debt->nominal - $request->payNominal;
+         $nominalUpdate = $debt->nominal - $nominalInt;
          $debt->update(['nominal' => $nominalUpdate]);
 
          // Save bukti transfer
@@ -107,7 +112,7 @@ class DebtController extends Controller
          return response()->json([
             'status' => 201,
             'message'=> 'Transaksi berhasil',
-            'nominal' => $debt->nominal
+            'nominal' => 'Rp. '.number_format( $debt->nominal,0,',','.')
         ]);
 
 

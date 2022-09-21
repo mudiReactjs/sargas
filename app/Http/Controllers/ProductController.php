@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -19,10 +20,30 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|unique:products',
-            'price' => 'required|integer'
         ]);
 
-        Http::post('http://sargas.test/api/products', $request->all());
+        // Format currency to integer
+        $fishermenPriceFormat = Str::replace(['Rp.', '.'],'',$request->fishermen_price);
+        $fishermenPriceInt = (int)$fishermenPriceFormat;
+
+        $grupPriceFormat = Str::replace(['Rp.', '.'],'',$request->grup_price);
+        $grupPriceInt = (int)$grupPriceFormat;
+
+        $supplierPriceFormat = Str::replace(['Rp.', '.'],'',$request->supplier_price);
+        $supllierPriceInt = (int)$supplierPriceFormat;
+
+        $totalPriceFormat = Str::replace(['Rp.', '.'],'',$request->total_price);
+        $totalPriceInt = (int)$totalPriceFormat;
+
+        $data = [
+            'name' => $request->name,
+            'fishermen_price' => $fishermenPriceInt,
+            'grup_price' => $grupPriceInt,
+            'supplier_price' => $supllierPriceInt,
+            'total_price' => $totalPriceInt
+        ];
+
+        Http::post('http://sargas.test/api/products', $data);
 
         Alert::success('Notifikasi', 'Data berhasil disimpan');
         return back();
@@ -30,7 +51,28 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        Http::patch('http://sargas.test/api/products/'.$id, $request->all());
+        // Format currency to integer
+        $fishermenPriceFormat = Str::replace(['Rp.', '.'],'',$request->fishermen_price);
+        $fishermenPriceInt = (int)$fishermenPriceFormat;
+
+        $grupPriceFormat = Str::replace(['Rp.', '.'],'',$request->grup_price);
+        $grupPriceInt = (int)$grupPriceFormat;
+
+        $supplierPriceFormat = Str::replace(['Rp.', '.'],'',$request->supplier_price);
+        $supllierPriceInt = (int)$supplierPriceFormat;
+
+        $totalPriceFormat = Str::replace(['Rp.', '.'],'',$request->total_price);
+        $totalPriceInt = (int)$totalPriceFormat;
+
+        $data = [
+            'name' => $request->name,
+            'fishermen_price' => $fishermenPriceInt,
+            'grup_price' => $grupPriceInt,
+            'supplier_price' => $supllierPriceInt,
+            'total_price' => $totalPriceInt
+        ];
+
+        Http::patch('http://sargas.test/api/products/'.$id, $data);
 
         Alert::success('Notifikasi', 'Data berhasil diupdate');
         return back();

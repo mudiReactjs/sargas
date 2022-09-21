@@ -145,7 +145,7 @@
                 "<div class='form-group'>"+
                     "<div class='col-md-12'>"+
                         "<label>Nominal Kasbon</label>"+
-                        "<input type='number' class='form-control' id='submissionNominal' name='submissionNominal' placeholder='Nominal Kasbon' min='1' required>"+
+                        "<input type='text' class='form-control' id='submissionNominal' name='submissionNominal' placeholder='Nominal Kasbon' required>"+
                     "</div>"+
                 "</div>"+
                 "<div class='form-group'>"+
@@ -154,6 +154,30 @@
                     "</div>"+
                 "</div>"
             );
+            const rupiah = document.getElementById("submissionNominal");
+            rupiah.addEventListener("keyup", function(e) {
+                // tambahkan 'Rp.' pada saat form di ketik
+                // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+                rupiah.value = formatRupiah(this.value, "Rp. ");
+            });
+            /* Fungsi formatRupiah */
+            function formatRupiah(angka, prefix) {
+                var number_string = angka.replace(/[^,\d]/g, "").toString(),
+                    split = number_string.split(","),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                // tambahkan titik jika yang di input sudah menjadi angka ribuan
+                if (ribuan) {
+                    separator = sisa ? "." : "";
+                    rupiah += separator + ribuan.join(".");
+                }
+
+                rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+                return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
+            }
+
         } else if(event.target.value == 'pembayaran') {
             $('#formTitle').html(
                 "<h4>Pembayaran Kasbon</h4>"
@@ -163,7 +187,7 @@
                 "<div class='form-group'>"+
                     "<div class='col-md-12'>"+
                         "<label>Nominal bayar</label>"+
-                        "<input type='number' class='form-control' id='payNominal' name='payNominal' placeholder='Nominal bayar' min='1' required>"+
+                        "<input type='text' class='form-control' id='payNominal' name='payNominal' placeholder='Nominal bayar' min='1' required>"+
                     "</div>"+
                 "</div>"+
                 "<div class='form-group'>"+
@@ -179,6 +203,30 @@
                     "</div>"+
                 "</div>"
             );
+
+            const payNominal = document.getElementById("payNominal");
+            payNominal.addEventListener("keyup", function(e) {
+                // tambahkan 'Rp.' pada saat form di ketik
+                // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+                payNominal.value = formatRupiah(this.value, "Rp. ");
+            });
+            /* Fungsi formatRupiah */
+            function formatRupiah(angka, prefix) {
+                var number_string = angka.replace(/[^,\d]/g, "").toString(),
+                    split = number_string.split(","),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+                // tambahkan titik jika yang di input sudah menjadi angka ribuan
+                if (ribuan) {
+                    separator = sisa ? "." : "";
+                    rupiah += separator + ribuan.join(".");
+                }
+
+                rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+                return prefix == undefined ? rupiah : rupiah ? "Rp. " + rupiah : "";
+            }
         } else {
             $('#formTitle').html(
                 "<h4>Silahkan Pilih Metode Kasbon</h4>"
@@ -257,7 +305,7 @@
                         "<div class='form-group'>"+
                             "<div class='col-md-12'>"+
                                 "<label>Info Tanggungan</label>"+
-                                "<input type='number' class='form-control' id='debtGet' value='"+checkDebt['nominal']+"' placeholder='Info Tanggungan' min='1' disabled>"+
+                                "<input type='text' class='form-control' id='debtGet' value='"+checkDebt['nominal']+"' placeholder='Info Tanggungan' min='1' disabled>"+
                             "</div>"+
                         "</div>"
                     );
@@ -282,7 +330,7 @@
             alert('Silahkan pilih nelayan');
         } else {
             var fishermenID = document.getElementById('fishermenID').value;
-            var nominal = document.getElementById('submissionNominal').value;
+            var nominal = $('#submissionNominal').val();
 
             if (nominal == "") {
                 alert('Nominal is required');
@@ -306,6 +354,7 @@
                         );
                         document.getElementById('submissionNominal').value = "";
                         document.getElementById('debtGet').value = response['nominal'];
+
                     }
                 })
             }
@@ -361,6 +410,10 @@
 
         });
     })
+
+</script>
+
+<script>
 
 </script>
 @endsection

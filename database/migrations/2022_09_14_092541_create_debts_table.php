@@ -15,7 +15,6 @@ class CreateDebtsTable extends Migration
     {
         Schema::create('debts', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
             $table->string('fishermen_id');
             $table->integer('nominal');
             $table->timestamps();

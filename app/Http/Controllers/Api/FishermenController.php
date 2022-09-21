@@ -6,9 +6,11 @@ use App\Helpers\ApiFormatter;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Fishermen\FishermenCollection;
 use App\Http\Resources\Fishermen\FishermenResource;
+use App\Models\Debt;
 use App\Models\Fishermen;
 use App\Models\Location;
 use App\Models\Product;
+use App\Models\Sack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -61,8 +63,6 @@ class FishermenController extends Controller
             'name' => 'required',
             'address' => 'required',
             'no_tlp' => 'required|regex:/[0-9]/',
-            'tool' => 'required',
-            'family_amount' => 'required|integer',
             'image' => 'required|mimes:png,jpg,jpeg|max:2048',
             'status' => 'required|boolean'
         ];
@@ -93,11 +93,48 @@ class FishermenController extends Controller
     public function show($id)
     {
         $fishermen = Fishermen::find($id);
+        $debt = Debt::where('fishermen_id', $id)->first();
+        $sack = Sack::where('fishermen_id', $id)->first();
+
+        if ($sack != null) {
+            $getSack = [
+                'sack_brought' => $sack->sack_brought,
+                'sack_deposit' => $sack->sack_deposit,
+                'residual' =>  $sack->residual
+            ];
+        } else {
+            $getSack = [
+                'sack_brought' => 0,
+                'sack_deposit' => 0,
+                'residual' =>  0
+            ];
+        }
+
+        if ($debt != null) {
+            if ($debt->nominal > 0) {
+                $status = 'Belum Lunas';
+            } else {
+                $status = 'Lunas';
+            }
+            $getDebt = [
+                'nominal' => 'Rp. '.number_format($debt->nominal,0,',','.'),
+                'status' => $status
+            ];
+        } else {
+            $getDebt = [
+                'nominal' => 'RP. 0',
+                'status' => 'Tidak ada kasbon'
+            ];
+        }
 
         if ($fishermen) {
             $json = [
                 'status' => ApiFormatter::getResponse(200, 'get'),
-                'data' => new FishermenResource($fishermen)
+                'data' => [
+                    'fishermen' => new FishermenResource($fishermen),
+                    'sack' => $getSack,
+                    'debt' => $getDebt
+                ]
             ];
         } else {
             $json = [

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\DebtController;
 use App\Http\Controllers\Api\FishermenController;
 use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\MasterTransaksiOperasionalController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PurchaseController;
 use Illuminate\Http\Request;
@@ -50,3 +51,5 @@ Route::prefix('debt')->group(function() {
     Route::get('/payment/{id}', [DebtController::class, 'payment']);
     Route::patch('payment/{id}', [DebtController::class, 'payment_update']);
 });
+
+Route::resource('/master-transaksi-operasional', MasterTransaksiOperasionalController::class);

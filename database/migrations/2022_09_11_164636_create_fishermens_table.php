@@ -20,8 +20,8 @@ class CreateFishermensTable extends Migration
             $table->string('no_tlp');
             $table->integer('location_id');
             $table->integer('product_id');
-            $table->string('tool');
-            $table->integer('family_amount');
+            $table->string('tool')->nullable();
+            $table->integer('family_amount')->nullable();
             $table->text('image');
             $table->boolean('status');
             $table->timestamps();

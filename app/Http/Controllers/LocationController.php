@@ -33,6 +33,7 @@ class LocationController extends Controller
 
         Alert::success('Notifikasi', 'Data berhasil disimpan');
         return back();
+
     }
 
     public function update(Request $request, $slug)

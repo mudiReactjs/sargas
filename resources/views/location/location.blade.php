@@ -25,7 +25,7 @@
                                 </th>
                             </tr>
                             <tr>
-                                <th>No</th>
+                                <th>Id</th>
                                 <th>Nama Lokasi</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -33,7 +33,7 @@
                         <tbody>
                             @foreach ($locations['content'] as $result)
                             <tr>
-                                <th scope="row">#</th>
+                                <th scope="row">{{$result['id']}}</th>
                                 <td>{{$result['name']}}</td>
                                 <td class="text-center">
                                     <form action="{{route('location.destroy', $result['slug'])}}" method="POST">
