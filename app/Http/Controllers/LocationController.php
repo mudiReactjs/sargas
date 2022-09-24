@@ -11,7 +11,7 @@ class LocationController extends Controller
 {
     public function index()
     {
-        $locations = Http::get('sargas.test/api/locations')['data'];
+        $locations = Http::get('http://sargas.test/api/locations')['data'];
         return view('location.location', compact('locations'));
     }
 
@@ -29,7 +29,12 @@ class LocationController extends Controller
                 'name' => 'required|unique:locations'
             ]
         );
-        Http::post('http://sargas.test/api/locations/store', $request->all());
+
+        $data = [
+            'name' => $request->name
+        ];
+
+        Http::post('http://sargas.test/api/locations/store',$data);
 
         Alert::success('Notifikasi', 'Data berhasil disimpan');
         return back();

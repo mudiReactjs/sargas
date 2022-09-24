@@ -18,7 +18,9 @@ class MasterTransaksiOperasionalController extends Controller
      */
     public function index()
     {
-        $data = MasterTransaksiOperasional::select('id', 'code', 'name', 'product_id')->paginate(10);
+        $data = MasterTransaksiOperasional::join('products', 'master_transaksi_operasionals.product_id', '=', 'products.id')
+                                            ->select('id', 'code', 'name', 'products.id as productID', 'products.name as productName')
+                                            ->get();
         $json = [
             'status' => ApiFormatter::getResponse(200, 'get'),
             'data' => $data

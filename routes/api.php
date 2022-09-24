@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\MasterTransaksiOperasionalController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\PurchaseController;
+use App\Http\Controllers\Api\TransaksiOperasionalController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,3 +54,7 @@ Route::prefix('debt')->group(function() {
 });
 
 Route::resource('/master-transaksi-operasional', MasterTransaksiOperasionalController::class);
+
+// Transaksi Operasional
+Route::get('/transaksi-operasional/form', [TransaksiOperasionalController::class, 'form']);
+Route::post('/transaksi-operasional/store', [TransaksiOperasionalController::class, 'store']);

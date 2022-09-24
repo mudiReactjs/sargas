@@ -90,4 +90,5 @@ Route::prefix('dashboard')->middleware(['auth'])->group(function() {
     Route::get('karung/check-sack-fishermen', [SackController::class, 'checkSackFishermen'])->name('sack.check');
     Route::post('/karung', [SackController::class, 'store'])->name('sack.store');
 
+
 });
