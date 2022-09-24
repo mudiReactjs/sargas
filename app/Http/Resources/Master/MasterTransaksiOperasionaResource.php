@@ -17,6 +17,7 @@ class MasterTransaksiOperasionaResource extends JsonResource
         return [
             'id' => $this->id,
             'code' => $this->code,
+            'name' => $this->name,
             'product' => [
                 'id' => $this->product->id,
                 'name' => $this->product->name,

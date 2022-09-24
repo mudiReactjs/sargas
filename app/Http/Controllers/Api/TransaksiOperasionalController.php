@@ -15,7 +15,7 @@ class TransaksiOperasionalController extends Controller
 {
     public function form()
     {
-        $data = MasterTransaksiOperasional::select('id', 'code', 'product_id')->get();
+        $data = MasterTransaksiOperasional::select('id', 'code','name', 'product_id')->get();
 
         $json = [
             'status' => ApiFormatter::getResponse(200, 'get'),
