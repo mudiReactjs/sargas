@@ -33,6 +33,11 @@
                             <i class="fa fa-dashboard"></i> <span>Transaksi Produk</span>
                         </a>
                     </li>
+                    <li class="treeview @if(Request::routeIs('mto.home', 'mto.index', 'to.form')) active @endif">
+                        <a href="{{route('mto.home')}}">
+                            <i class="fa fa-dashboard"></i> <span>Transaksi Operasional</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
